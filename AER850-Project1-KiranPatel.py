@@ -15,35 +15,51 @@ Created on Thu Oct 10 12:59:41 2024
 import pandas as pd 
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sbn
 
 
 #Step 1: Read Data from CSV file
 # df = pd.read_csv converts the csv datafile into a dataframe
 # This will allow for further analysis and data manipulation
-df = pd.read_csv("Project 1 Data.csv");
+df = pd.read_csv("AER850 - Project_1_Data.csv");
 
 
 # Step 2: Data Visualization
 
-# Create a figure and a 3D axis
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+# Create a figure and a 3D axis to plot the data
+# A 3d Plot is utilized as the data consists of X,Y,Z coordinates 
+# (i.e) 
+fig1 = plt.figure()
+ax = fig1.add_subplot(111, projection='3d')
 
 # Create a 3D scatter plot with color-coded points based on "Step"
-sc = ax.scatter(df['X'], df['Y'], df['Z'], c=df['Step'], cmap='viridis', marker='o')
+scatterplot = ax.scatter(df['X'], df['Y'], df['Z'], c=df['Step'], cmap='viridis', marker='o')
+colourbar = plt.colorbar(scatterplot,orientation='vertical', cax=fig1.add_axes([0.85, 0.15, 0.03, 0.7]))
+colourbar.set_label('Step')
 
-# Add color bar
-cbar = plt.colorbar(sc,orientation='vertical', cax=fig.add_axes([0.85, 0.15, 0.03, 0.7]))
-
-cbar.set_label('Step')
-
-# Set axis labels
+# Axis labels
 ax.set_xlabel('X')
 ax.set_ylabel('Y')
 ax.set_zlabel('Z')
 
-# Show the 3D plot
+# Show the 3D plot in the plotting panel
 plt.show()
+
+
+#Step 3 - Correlation Analysis
+# A Heat map is used to make a Correlation Matrix to see if any points of data 
+# have strong correlations and can be removed from analysis 
+
+correlation_matrix = df.corr()
+sbn.heatmap(np.abs(correlation_matrix))
+
+
+
+# Step 4 - Classification Model Development/Engineering 
+
+
+
+
 
 
 
