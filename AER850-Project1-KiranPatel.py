@@ -30,6 +30,11 @@ import seaborn as sbn
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import StratifiedShuffleSplit, GridSearchCV
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import svm
+from sklearn.svm import SVC
+from sklearn.model_selection import RandomizedSearchCV
+from sklearn.metrics import accuracy_score, f1_score, precision_score
 #-----------------------------------------------------------------------------
 
 
@@ -151,6 +156,101 @@ sbn.heatmap(np.abs(corr_matrix), annot=True, fmt=".2f", cmap='cool', vmin=-0, vm
 
 
 # Step 4 - Classification Model Development/Engineering 
+#-----------------------------------------------------------------------------
+
+# Model 1 - Logistic Regression 
+#-----------------------------------------------------------------------------
+
+model_1_LR = LogisticRegression(random_state = 1)
+
+params1 = {
+    'C':[0.001,0.01,0.1, 1, 2],
+    'max_iter':[5000,6000,8000],
+    'solver':['saga','sag','lbfgs']
+}
+print("\nrunning grid search for logistical Regression Model")
+grid_search = GridSearchCV(model_1_LR, params1, cv=5, scoring='neg_mean_absolute_error', n_jobs=-1)
+grid_search.fit(X_train, y_train)
+best_params1 = grid_search.best_params_
+print("Best Hyperparameters:", best_params1)
+best_m1 = grid_search.best_estimator_
+
+
+#Testing 
+
+best_m1.fit(X_train, y_train)
+m1_pred = best_m1.predict(X_test)
+
+print("\nScores for logistical Regression Model\n")
+print("Precision score: ", precision_score(y_test, m1_pred, average= 'weighted'))
+print("Accuracy score: ", accuracy_score(y_test, m1_pred))
+print("F1 score: ",f1_score(y_test, m1_pred, average= 'weighted'))
+    
+#-----------------------------------------------------------------------------
+
+# Model 2 - SVM Support Vector Machine
+#-----------------------------------------------------------------------------
+
+SVM_model_2 = SVC(random_state=1)
+
+params2 = {
+     'gamma': ['scale','auto',10,100],
+     'kernel': ['linear', 'poly', 'rbf', 'sigmoid'],
+     'C': [0.001,0.01,0.1, 1, 10]
+}
+
+print("\nrunning grid search for SVC Model")
+grid_search = GridSearchCV(SVM_model_2, params2, cv=5, scoring='neg_mean_absolute_error', n_jobs=-1)
+grid_search.fit(X_train, y_train)
+best_params2 = grid_search.best_params_
+print("Best Hyperparameters:", best_params2)
+best_m2 = grid_search.best_estimator_
+
+# Testing 
+
+best_m2.fit(X_train, y_train)
+m2_pred = best_m2.predict(X_test)
+
+print("\nScores for Support Vector Machine Model~~\n")
+print("Precision score: ", precision_score(y_test, m2_pred, average= 'weighted'))
+print("Accuracy score: ", accuracy_score(y_test, m2_pred))
+print("F1 score: ",f1_score(y_test, m2_pred, average= 'weighted'))
+#-----------------------------------------------------------------------------
+
+
+# Model 3 - Random Forest 
+#-----------------------------------------------------------------------------
+
+model_3_RF = RandomForestClassifier(random_state = 501)
+
+params1 = {
+    'n_estimators': [10,50,100],
+    'max_depth': [None,5,10,15],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4],
+    'max_features': ['sqrt', 'log2']
+}
+
+print("\nrunning grid search for Random Forest Model")
+grid_search = GridSearchCV(model_3_RF, params1, cv=5, scoring='neg_mean_absolute_error', n_jobs=-1)
+grid_search.fit(X_train, y_train)
+best_params = grid_search.best_params_
+print("Best Hyperparameters:", best_params)
+best_m1 = grid_search.best_estimator_
+
+
+
+# Model 4 - 
+
+
+
+# Step 5 - Model Performance Analysis  
+#-----------------------------------------------------------------------------
+
+
+
+
+
 
 
 
