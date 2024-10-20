@@ -221,14 +221,14 @@ print("F1 score: ",f1_score(y_test, m2_pred, average= 'weighted'))
 # Model 3 - Random Forest 
 #-----------------------------------------------------------------------------
 
-model_3_RF = RandomForestClassifier(random_state = 501)
+model_3_RF = RandomForestClassifier(random_state = 1)
 
 params1 = {
-    'n_estimators': [10,50,100],
-    'max_depth': [None,5,10,15],
+    'n_estimators': [5,10,20,50,100],
+    'max_depth': [None,5,10,15,20],
     'min_samples_split': [2, 5, 10],
     'min_samples_leaf': [1, 2, 4],
-    'max_features': ['sqrt', 'log2']
+    'max_features': [None, 'sqrt', 'log2']
 }
 
 print("\nrunning grid search for Random Forest Model")
@@ -236,9 +236,15 @@ grid_search = GridSearchCV(model_3_RF, params1, cv=5, scoring='neg_mean_absolute
 grid_search.fit(X_train, y_train)
 best_params = grid_search.best_params_
 print("Best Hyperparameters:", best_params)
-best_m1 = grid_search.best_estimator_
+best_m3 = grid_search.best_estimator_
 
+best_m3.fit(X_train, y_train)
+m3_pred = best_m3.predict(X_test)
 
+print("\nScores for Random Forest Classifier Model~~\n")
+print("Precision score: ", precision_score(y_test, m3_pred, average= 'weighted'))
+print("Accuracy score: ", accuracy_score(y_test, m3_pred))
+print("F1 score: ",f1_score(y_test, m3_pred, average= 'weighted'))
 
 # Model 4 - 
 
