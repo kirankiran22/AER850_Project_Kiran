@@ -216,7 +216,7 @@ best_m2 = grid_search.best_estimator_
 best_m2.fit(X_train, y_train)
 m2_pred = best_m2.predict(X_test)
 
-print("\nScores for Support Vector Machine Model~~\n")
+print("\nScores for Support Vector Machine Model\n")
 print("Precision score: ", precision_score(y_test, m2_pred, average= 'weighted'))
 print("Accuracy score: ", accuracy_score(y_test, m2_pred))
 print("F1 score: ",f1_score(y_test, m2_pred, average= 'weighted'))
@@ -262,9 +262,9 @@ model_4_DT = DecisionTreeClassifier(random_state = 1)
 params4 = {
     'criterion': ['gini','entropy'],
     'splitter': ['best','random'],
-    'max_depth': [2, 3, 4],
-    'min_samples_split': [2, 5],
-    'min_samples_leaf': [1, 2, 4],
+    'max_depth': [2, 3, 4, 10],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4, 10],
     'max_features': ['sqrt', 'log2']
 }
 print("\nrunning grid search for DTC Model")
